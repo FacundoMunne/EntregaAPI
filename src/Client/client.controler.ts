@@ -12,8 +12,8 @@ function sanitizeClientInput(req: Request, res: Response, next: NextFunction) {
     address: req.body.address,
     phone: req.body.phone,
     email: req.body.email,
-    regristrationDate: req.body.regristrationDate,
-  }
+    registrationDate: req.body.registrationDate,
+  };
   //more checks here
 
   Object.keys(req.body.sanitizedInput).forEach((key) => {
@@ -24,21 +24,23 @@ function sanitizeClientInput(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
-function findAll(req: Request, res: Response) {
-  res.json({ data: repository.findAll() })
+async function findAll(req: Request, res: Response) {
+  res.json({ data: await repository.findAll() })
 }
-
-function findOne(req: Request, res: Response) {
-  const id = req.params.id
-  const client = repository.findOne({ id })
-  if (!client) {
-    return res.status(404).send({ message: 'Client not found' })
+async function findOne(req: Request, res: Response) {
+  const id = Number.parseInt(req.params.id);
+  if (isNaN(id)) {
+    return res.status(400).send({ message: 'Invalid id parameter' });
   }
-  res.json({ data: client })
+  const client = await repository.findOne({ id: id.toString() });
+  if (!client) {
+    return res.status(404).send({ message: 'Client not found' });
+  }
+  res.json({ data: client });
 }
 
-function add(req: Request, res: Response) {
-  const input = req.body.sanitizedInput
+async function add(req: Request, res: Response) {
+  const input = req.body.sanitizedInput;
 
   const clientInput = new Client(
     input.dni,
@@ -47,16 +49,20 @@ function add(req: Request, res: Response) {
     input.address,
     input.phone,
     input.email,
-    input.regristrationDate,
-  )
+    input.registrationDate,
+  );
 
-  const client= repository.add(clientInput)
-  return res.status(201).send({ message: 'Client created', data: client })
+  try {
+    const client = await repository.add(clientInput); // Espera la inserción en la base de datos
+    return res.status(201).send({ message: 'Client created', data: client });
+  } catch (error) {
+    console.error('Error adding client:', error);
+    return res.status(500).send({ message: 'Failed to create client' });
+  }
 }
 
-function update(req: Request, res: Response) {
-  req.body.sanitizedInput.id = req.params.id
-  const client = repository.update(req.body.sanitizedInput)
+async function update(req: Request, res: Response) {
+  const client = await repository.update(req.params.id, req.body.sanitizedInput)
 
   if (!client) {
     return res.status(404).send({ message: 'Client not found' })
@@ -65,9 +71,9 @@ function update(req: Request, res: Response) {
   return res.status(200).send({ message: 'Client updated successfully', data: client })
 }
 
-function remove(req: Request, res: Response) {
-  const id = req.params.id
-  const client = repository.delete({ id })
+async function remove(req: Request, res: Response) {
+  const { id } = req.params;
+  const client = await repository.delete({ id })
 
   if (!client) {
     res.status(404).send({ message: 'Client not found' })

@@ -3,7 +3,9 @@ GET http://localhost:3000/api/clients
 
 
 ### obtener un cliente
-GET http://localhost:3000/api/clients/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+GET http://localhost:3000/api/clients/1
+
+
 
 ### crear un nuevo cliente
 POST http://localhost:3000/api/clients
@@ -23,7 +25,7 @@ Content-Type: application/json
 
 
 ### modificar un cliente (PUT - recurso completo e idempotente)
-PUT http://localhost:3000/api/clients/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+PUT http://localhost:3000/api/clients/1
 Content-Type: application/json
 
 {
@@ -32,19 +34,19 @@ Content-Type: application/json
   "lastname": "Munne",
   "address": "3 de febrero 377",
   "phone": "3416470473",
-  "email": "fnmunne@frro.utn.edu.ar",
+  "email": "fnmunne@frro.ar",
   "registrationDate": "08/12/2002"
 }
 
 ### modificar un cliente (PATCH - recurso parcial)
-PATCH http://localhost:3000/api/clients/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+PATCH http://localhost:3000/api/clients/4
 Content-Type: application/json
 
 {
-  "firstname": "Facundo Nahuel",
-  "address": "3 de febrero 377",
-  "email": "fnmunne@frro.utn.edu.ar"  
+  "firstname": "Sebastian Gonzalez",
+  "address": "Peru 1500",
+  "email": "sebigonzi@gmail.com"  
 }
 
 ### borrar un cliente
-DELETE http://localhost:3000/api/clients/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+DELETE http://localhost:3000/api/clients/2

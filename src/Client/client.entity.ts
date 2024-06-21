@@ -1,5 +1,3 @@
-import crypto from 'node:crypto'
-
 export class Client {
   constructor(
     public dni: string,
@@ -9,6 +7,6 @@ export class Client {
     public phone: string,
     public email: string,
     public registrationDate: string,
-    public id = crypto.randomUUID()
+    public id?: number
   ) {}
 }

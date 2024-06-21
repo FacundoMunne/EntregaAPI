@@ -1,0 +1,29 @@
+create database if not exists veterinary;
+use veterinary;
+create user if not exists dsw @'%' identified by 'dsw';
+grant select,
+  update,
+  insert,
+  delete on veterinary.* to dsw @'%';
+create table if not exists `veterinary`.`clients` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `dni` VARCHAR(10) NOT NULL,
+  `firstname` VARCHAR(20) NOT NULL,
+  `lastname` VARCHAR(20) NOT NULL,
+  `address` VARCHAR(50) NOT NULL,
+  `phone` VARCHAR(15) NOT NULL,
+  `email` VARCHAR(50) NOT NULL,
+  `registrationDate` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+insert into veterinary.clients
+values(
+    1,
+    '44523096',
+    'Facundo',
+    'Munne',
+    'Buenos Aires 1430',
+    '3416470473',
+    'fnmunne@gmail.com',
+    '08/12/2002'
+  );
